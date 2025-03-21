@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Document</title>
+   </head>
+   <body>
+      <form id="uploadForm">
+         <input type="file" id="audioInput" accept="audio/*" required />
+         <button type="submit">Yuklash</button>
+      </form>
+      <script>
+         document.getElementById("uploadForm").addEventListener("submit", async (e) => {
+           e.preventDefault();
+           const fileInput = document.getElementById("audioInput");
+           const formData = new FormData();
+           formData.append("audioFile", fileInput.files[0]);
+
+           const response = await fetch("http://localhost:3000/upload", {
+             method: "POST",
+             body: formData,
+           });
+
+           const result = await response.json();
+           alert(result.message);
+         });
+      </script>
+   </body>
+</html>
