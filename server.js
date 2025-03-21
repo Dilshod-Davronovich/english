@@ -7,6 +7,9 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 app.use(cors());
 
+// Statik fayllarni ulash (admin panel uchun)
+app.use(express.static(path.join(__dirname, 'public')));
+
 // "audios" papkasini yaratish
 const uploadPath = path.join(__dirname, 'audios');
 
@@ -41,6 +44,11 @@ app.post('/upload', upload.single('audioFile'), (req, res) => {
       message: 'Audio muvaffaqiyatli yuklandi!',
       file: req.file.filename,
    });
+});
+
+// Admin panelni ochish uchun asosiy sahifa
+app.get('/', (req, res) => {
+   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 // "audios" papkasidagi fayllarga to‘g‘ridan-to‘g‘ri kirish imkoniyati
