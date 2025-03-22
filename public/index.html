@@ -1,16 +1,56 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uz">
    <head>
       <meta charset="UTF-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>Document</title>
-      <style>
-         body{
-             background-color: darkslategray;
-         }
-      </style>
+      <title>So‘z qo‘shish</title>
    </head>
    <body>
-      <h1 style="color: aliceblue;">Admin panel</h1>
+      <h2>Yangi so‘z qo‘shish</h2>
+      <form id="wordForm">
+         <input
+            type="text"
+            id="eng"
+            placeholder="Inglizcha so‘z"
+            required
+         /><br /><br />
+         <input
+            type="text"
+            id="uz"
+            placeholder="O‘zbekcha tarjima"
+            required
+         /><br /><br />
+         <input
+            type="text"
+            id="image"
+            placeholder="Rasm URL"
+            required
+         /><br /><br />
+         <button type="submit">Qo‘shish</button>
+      </form>
+      <p id="message"></p>
+
+      <script>
+         document.getElementById('wordForm').addEventListener('submit', async function(event) {
+             event.preventDefault(); // Form yuborilishining oldini olish
+
+             const eng = document.getElementById('eng').value;
+             const uz = document.getElementById('uz').value;
+             const image = document.getElementById('image').value;
+
+             const response = await fetch('https://english-i0qb.onrender.com/writeword', {
+                 method: 'POST',
+                 headers: { 'Content-Type': 'application/json' },
+                 body: JSON.stringify({ eng, uz, image })
+             });
+
+             const result = await response.json();
+             if (response.ok) {
+                 document.getElementById('message').innerText = "✅ So‘z muvaffaqiyatli qo‘shildi!";
+             } else {
+                 document.getElementById('message').innerText = "❌ Xatolik: " + result.error;
+             }
+         });
+      </script>
    </body>
 </html>
