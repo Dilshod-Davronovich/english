@@ -38,12 +38,19 @@
              const uz = document.getElementById('uz').value;
              const image = document.getElementById('image').value;
 
+             const newWord={
+               eng,
+               uz,
+               image,
+               yodlangan:false
+             }
+
              const response = await fetch('https://english-i0qb.onrender.com/writeword', {
                  method: 'POST',
                  headers: { 'Content-Type': 'application/json' },
-                 body: JSON.stringify({ eng, uz, image, yodlangan:false, })
+                 body: JSON.stringify(newWord)
              });
-
+             console.log(newWord)
              const result = await response.json();
              if (response.ok) {
                  document.getElementById('message').innerText = "✅ So‘z muvaffaqiyatli qo‘shildi!";

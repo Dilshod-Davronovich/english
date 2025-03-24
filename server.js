@@ -21,14 +21,14 @@ app.get('/', (req, res) => {
 
 app.post('/writeword', async (req, res) => {
    try {
-      const { eng, uz, image } = req.body;
-      if (!eng || !uz || !image) {
+      const { eng, uz, image, yodlangan } = req.body;
+      if (!eng || !uz || !image || !yodlangan) {
          return res
             .status(400)
             .json({ error: 'Barcha maydonlarni to‘ldiring' });
       }
 
-      await insertWord({ eng, uz, image }); // import qilingan funksiyani ishlatish
+      await insertWord({ eng, uz, image, yodlangan }); // import qilingan funksiyani ishlatish
 
       res.status(201).json({ success: true, message: 'So‘z qo‘shildi' });
    } catch (err) {
