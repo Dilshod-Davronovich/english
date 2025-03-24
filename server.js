@@ -22,7 +22,7 @@ app.get('/', (req, res) => {
 app.post('/writeword', async (req, res) => {
    try {
       const { eng, uz, image, yodlangan } = req.body;
-      if (!eng || !uz || !image || !yodlangan) {
+      if (!eng || !uz || !image) {
          return res
             .status(400)
             .json({ error: 'Barcha maydonlarni to‘ldiring' });
