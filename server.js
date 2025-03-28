@@ -1,4 +1,4 @@
-const { pool, getAllWordsOnly, insertWord } = require('./db');
+const { pool, getAllWordsOnly, insertWord, getAllUsers } = require('./db');
 const express = require('express');
 const path = require('path');
 const cors = require('cors');
@@ -41,6 +41,16 @@ app.get('/allwords', async (req, res) => {
    try {
       const words = await getAllWordsOnly(); // Bazadan barcha so‘zlarni olish
       res.json(words);
+   } catch (err) {
+      console.error('❌ Xatolik:', err.message);
+      res.status(500).json({ error: 'Server xatosi' });
+   }
+});
+
+app.get('/allusers', async (req, res) => {
+   try {
+      const users = await getAllUsers(); // Bazadan barcha foydalanuvchilarni olish
+      res.json(users);
    } catch (err) {
       console.error('❌ Xatolik:', err.message);
       res.status(500).json({ error: 'Server xatosi' });

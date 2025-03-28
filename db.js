@@ -33,6 +33,71 @@ async function getAllWordsOnly() {
 
 console.log(getAllWordsOnly());
 
+async function addUser(newUser) {
+   try {
+      const client = await pool.connect();
+
+      // 1️⃣ Jadval bo‘sh yoki yo‘qligini tekshiramiz
+      const checkQuery = 'SELECT users FROM users_storage';
+      const checkRes = await client.query(checkQuery);
+
+      if (checkRes.rowCount === 0) {
+         // 2️⃣ Agar jadval bo‘sh bo‘lsa, yangi qator qo‘shamiz
+         const insertQuery =
+            'INSERT INTO users_storage (users) VALUES ($1) RETURNING *';
+         const values = [JSON.stringify([newUser])]; // Yangi user massiv ichida bo‘lishi kerak
+         const insertRes = await client.query(insertQuery, values);
+         console.log(
+            '🆕 Yangi foydalanuvchi bazaga qo‘shildi:',
+            insertRes.rows[0]
+         );
+      } else {
+         // 3️⃣ Agar userlar bor bo‘lsa, yangi userni massivga qo‘shamiz
+         const updateQuery = `
+            UPDATE users_storage 
+            SET users = users || $1::jsonb 
+            RETURNING *`;
+
+         const values = [JSON.stringify([newUser])];
+         const updateRes = await client.query(updateQuery, values);
+         console.log('✅ Yangi foydalanuvchi qo‘shildi:', updateRes.rows[0]);
+      }
+
+      client.release();
+   } catch (err) {
+      console.error('❌ Xatolik:', err.message);
+   }
+}
+
+async function getUsers() {
+   try {
+      const query = 'SELECT users FROM users_storage';
+      const res = await pool.query(query);
+
+      if (res.rowCount === 0) {
+         console.log('ℹ️ Jadval bo‘sh.');
+         return [];
+      }
+
+      return res.rows[0].users;
+   } catch (err) {
+      console.error('❌ Xatolik:', err.message);
+      return [];
+   }
+}
+
+getUsers().then((users) => console.log(users));
+
+// addUser({
+//    name: 'Tohir Baratov',
+//    city: 'Guliston',
+//    amount: 3000,
+//    basket: [],
+//    image: 'https://english-i0qb.onrender.com/images/users/tohir.jpg',
+//    userName: 'tohir',
+//    password: 123,
+// });
+
 // insertWord({
 //    eng: 'apple',
 //    uz: 'olma',
