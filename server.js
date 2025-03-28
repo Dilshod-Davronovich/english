@@ -1,4 +1,4 @@
-const { pool, getAllWordsOnly, insertWord, getAllUsers } = require('./db');
+const { pool, getAllWordsOnly, insertWord, getUsers } = require('./db');
 const express = require('express');
 const path = require('path');
 const cors = require('cors');
@@ -49,7 +49,7 @@ app.get('/allwords', async (req, res) => {
 
 app.get('/allusers', async (req, res) => {
    try {
-      const users = await getAllUsers(); // Bazadan barcha foydalanuvchilarni olish
+      const users = await getUsers(); // Bazadan barcha foydalanuvchilarni olish
       res.json(users);
    } catch (err) {
       console.error('❌ Xatolik:', err.message);
