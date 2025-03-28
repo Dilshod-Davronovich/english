@@ -31,7 +31,7 @@ async function getAllWordsOnly() {
    }
 }
 
-console.log(getAllWordsOnly());
+// console.log(getAllWordsOnly());
 
 async function addUser(newUser) {
    try {
@@ -86,7 +86,7 @@ async function getUsers() {
    }
 }
 
-getUsers().then((users) => console.log(users));
+// getUsers().then((users) => console.log(users));
 
 // addUser({
 //    name: 'Tohir Baratov',
@@ -108,4 +108,4 @@ pool
    .then(() => console.log('PostgreSQL serveriga muvaffaqiyatli ulandi'))
    .catch((err) => console.error('Ulanishda xatolik:', err));
 
-module.exports = { pool, insertWord, getAllWordsOnly };
+module.exports = { pool, insertWord, getAllWordsOnly, getUsers };
